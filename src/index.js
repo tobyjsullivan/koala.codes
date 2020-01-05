@@ -1,4 +1,4 @@
-import logo from './image/koala001.png';
+import logo from './image/koala001.jpg';
 
 function main() {
   load_logo();
