@@ -123,7 +123,14 @@ resource "cloudflare_record" "email5" {
 resource "cloudflare_record" "email_verification" {
   zone_id = lookup(data.cloudflare_zones.website.zones[0], "id")
   name = var.domain
-  value = "zdrsn22ndja5k3zpzli2oy3dsmfwdteuevwifa6d56vep64fgi6a.mx-verification.google.com."
+  value = "zdrsn22ndja5k3zpzli2oy3dsmfwdteuevwifa6d56vep64fgi6a.mx-verification.google.com"
   type = "MX"
   priority = 15
+}
+
+resource "cloudflare_record" "txt_verification" {
+  zone_id = lookup(data.cloudflare_zones.website.zones[0], "id")
+  name = var.domain
+  value = "google-site-verification=yOMm600aQdVvL8rRp2NjkwthzJQlbIKDw--qR_uFMjw"
+  type = "TXT"
 }
