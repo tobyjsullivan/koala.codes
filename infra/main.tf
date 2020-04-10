@@ -83,7 +83,7 @@ resource "cloudflare_record" "www" {
 resource "cloudflare_record" "email1" {
   zone_id = lookup(data.cloudflare_zones.website.zones[0], "id")
   name = var.domain
-  value = "ASPMX.L.GOOGLE.COM"
+  value = "aspmx.l.google.com"
   type = "MX"
   priority = 1
 }
@@ -91,7 +91,7 @@ resource "cloudflare_record" "email1" {
 resource "cloudflare_record" "email2" {
   zone_id = lookup(data.cloudflare_zones.website.zones[0], "id")
   name = var.domain
-  value = "ALT1.ASPMX.L.GOOGLE.COM"
+  value = "alt1.aspmx.l.google.com"
   type = "MX"
   priority = 5
 }
@@ -99,7 +99,7 @@ resource "cloudflare_record" "email2" {
 resource "cloudflare_record" "email3" {
   zone_id = lookup(data.cloudflare_zones.website.zones[0], "id")
   name = var.domain
-  value = "ALT2.ASPMX.L.GOOGLE.COM"
+  value = "alt2.aspmx.l.google.com"
   type = "MX"
   priority = 5
 }
@@ -107,7 +107,7 @@ resource "cloudflare_record" "email3" {
 resource "cloudflare_record" "email4" {
   zone_id = lookup(data.cloudflare_zones.website.zones[0], "id")
   name = var.domain
-  value = "ALT3.ASPMX.L.GOOGLE.COM"
+  value = "alt3.aspmx.l.google.com"
   type = "MX"
   priority = 10
 }
@@ -115,7 +115,15 @@ resource "cloudflare_record" "email4" {
 resource "cloudflare_record" "email5" {
   zone_id = lookup(data.cloudflare_zones.website.zones[0], "id")
   name = var.domain
-  value = "ALT4.ASPMX.L.GOOGLE.COM"
+  value = "alt4.aspmx.l.google.com"
   type = "MX"
   priority = 10
+}
+
+resource "cloudflare_record" "email_verification" {
+  zone_id = lookup(data.cloudflare_zones.website.zones[0], "id")
+  name = var.domain
+  value = "zdrsn22ndja5k3zpzli2oy3dsmfwdteuevwifa6d56vep64fgi6a.mx-verification.google.com."
+  type = "MX"
+  priority = 15
 }
