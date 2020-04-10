@@ -16,7 +16,7 @@ variable "cloudflare_domain" {
 }
 
 output "s3_bucket" {
-  value = "${var.domain}"
+  value = var.domain
 }
 
 provider "aws" {
@@ -24,18 +24,18 @@ provider "aws" {
 }
 
 provider "cloudflare" {
-  email = "${var.cloudflare_email}"
-  api_key = "${var.cloudflare_api_key}"
+  email = var.cloudflare_email
+  api_key = var.cloudflare_api_key
 }
 
 data "cloudflare_zones" "website" {
   filter {
-    name = "${var.domain}"
+    name = var.domain
   }
 }
 
 resource "aws_s3_bucket" "website" {
-  bucket = "${var.domain}"
+  bucket = var.domain
   force_destroy = false
   policy = <<EOF
 {
@@ -65,17 +65,57 @@ resource "aws_s3_bucket" "www" {
 }
 
 resource "cloudflare_record" "root" {
-  zone_id = "${lookup(data.cloudflare_zones.website.zones[0], "id")}"
-  name = "${var.domain}"
-  value = "${aws_s3_bucket.website.website_endpoint}"
+  zone_id = lookup(data.cloudflare_zones.website.zones[0], "id")
+  name = var.domain
+  value = aws_s3_bucket.website.website_endpoint
   type = "CNAME"
   proxied = true
 }
 
 resource "cloudflare_record" "www" {
-  zone_id = "${lookup(data.cloudflare_zones.website.zones[0], "id")}"
+  zone_id = lookup(data.cloudflare_zones.website.zones[0], "id")
   name = "www.${var.domain}"
-  value = "${cloudflare_record.root.hostname}"
+  value = cloudflare_record.root.hostname
   type = "CNAME"
   proxied = true
+}
+
+resource "cloudflare_record" "email1" {
+  zone_id = lookup(data.cloudflare_zones.website.zones[0], "id")
+  name = var.domain
+  value = "ASPMX.L.GOOGLE.COM"
+  type = "MX"
+  priority = 1
+}
+
+resource "cloudflare_record" "email2" {
+  zone_id = lookup(data.cloudflare_zones.website.zones[0], "id")
+  name = var.domain
+  value = "ALT1.ASPMX.L.GOOGLE.COM"
+  type = "MX"
+  priority = 5
+}
+
+resource "cloudflare_record" "email3" {
+  zone_id = lookup(data.cloudflare_zones.website.zones[0], "id")
+  name = var.domain
+  value = "ALT2.ASPMX.L.GOOGLE.COM"
+  type = "MX"
+  priority = 5
+}
+
+resource "cloudflare_record" "email4" {
+  zone_id = lookup(data.cloudflare_zones.website.zones[0], "id")
+  name = var.domain
+  value = "ALT3.ASPMX.L.GOOGLE.COM"
+  type = "MX"
+  priority = 10
+}
+
+resource "cloudflare_record" "email5" {
+  zone_id = lookup(data.cloudflare_zones.website.zones[0], "id")
+  name = var.domain
+  value = "ALT4.ASPMX.L.GOOGLE.COM"
+  type = "MX"
+  priority = 10
 }
